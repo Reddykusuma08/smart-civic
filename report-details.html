@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Report Details | CivicLens</title>
+    <link rel="stylesheet" href="../css/main.css" />
+
+    <style>
+        body {
+            background: #f4f6f8;
+        }
+
+        .details-container {
+            max-width: 760px;
+            margin: 60px auto;
+            padding: 16px;
+        }
+
+        .details-card {
+            background: #fff;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, .08);
+        }
+
+        label {
+            display: block;
+            margin-top: 16px;
+            font-weight: 600;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 6px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+        }
+
+        #map {
+            height: 300px;
+            margin-top: 12px;
+            border-radius: 10px;
+        }
+
+        button {
+            margin-top: 24px;
+            width: 100%;
+            padding: 14px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <h1 style="text-align:center">CivicLens</h1>
+    </header>
+
+    <section class="details-container">
+        <div class="details-card">
+
+            <h2 id="pageTitle">Report Issue</h2>
+            <p id="selectedCategory"></p>
+
+            <form id="reportForm">
+
+                <label>Sub Issue</label>
+                <select id="subIssue" required></select>
+
+                <label>Description</label>
+                <textarea id="description" rows="4" required></textarea>
+
+                <label>Upload Image (optional)</label>
+                <input type="file" id="image" accept="image/*" />
+
+                <label>Select Location</label>
+                <div id="map"></div>
+
+                <button type="submit">Submit</button>
+
+            </form>
+        </div>
+    </section>
+
+    <!-- 🔥 FIREBASE COMPAT SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+
+    <!-- 🔥 GOOGLE MAPS (CALLBACK FIX) -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeqE7ED6tR1VbVKET7_UXpAifwTvI0byI&callback=initMap"
+        defer>
+        </script>
+
+    <script>
+
+
+        /* ================= CATEGORY DATA ================= */
+        const params = new URLSearchParams(window.location.search);
+        const categoryKey = params.get("category");
+
+        const titles = {
+            road: "Road & Transport",
+            water: "Water Supply",
+            electricity: "Electricity",
+            garbage: "Garbage & Sanitation",
+            drainage: "Drainage & Sewage",
+            safety: "Street Safety",
+            public: "Public Facilities",
+            pollution: "Pollution & Noise",
+            animal: "Animal Issues",
+            emergency: "Emergency / Disaster"
+        };
+
+        const issues = {
+            road: ["Potholes", "Broken Road"],
+            water: ["No Water", "Leakage"],
+            electricity: ["Power Cut", "Street Light"],
+            garbage: ["Garbage Overflow"],
+            drainage: ["Open Drain"],
+            safety: ["Dark Area"],
+            public: ["Bus Stop Issue"],
+            pollution: ["Noise Pollution"],
+            animal: ["Stray Animals"],
+            emergency: ["Flooded Road"]
+        };
+
+        document.getElementById("pageTitle").innerText = titles[categoryKey];
+        document.getElementById("selectedCategory").innerText =
+            "Selected Category: " + titles[categoryKey];
+
+        const subIssueSelect = document.getElementById("subIssue");
+        issues[categoryKey].forEach(issue => {
+            const opt = document.createElement("option");
+            opt.value = issue;
+            opt.textContent = issue;
+            subIssueSelect.appendChild(opt);
+        });
+
+        /* ================= FIREBASE INIT (SAFE) ================= */
+        const firebaseConfig = {
+            apiKey: "AIzaSyAeqE7ED6tR1VbVKET7_UXpAifwTvI0byI",
+            authDomain: "smart-civic-portal-6e6d9.firebaseapp.com",
+            projectId: "smart-civic-portal-6e6d9",
+            storageBucket: "smart-civic-portal-6e6d9.appspot.com"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        /* ================= GOOGLE MAP ================= */
+        let selectedLat = null;
+        let selectedLng = null;
+        let map, marker;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 17.385044, lng: 78.486671 },
+                zoom: 12
+            });
+
+            marker = new google.maps.Marker({ map });
+
+            map.addListener("click", e => {
+                selectedLat = e.latLng.lat();
+                selectedLng = e.latLng.lng();
+                marker.setPosition(e.latLng);
+            });
+        }
+
+        /* ================= SUBMIT ================= */
+        document.getElementById("reportForm").addEventListener("submit", async e => {
+            e.preventDefault();
+
+            if (selectedLat || selectedLng) {
+                alert("Please select location on map");
+                return;
+            }
+
+            const subIssue = subIssueSelect.value;
+            const description = document.getElementById("description").value;
+            const file = document.getElementById("image").files[0];
+
+            let imageURL = "";
+
+            if (file) {
+                const imgRef = storage.ref(`reports/${Date.now()}_${file.name}`);
+                await imgRef.put(file);
+                imageURL = await imgRef.getDownloadURL();
+            }
+
+            await db.collection("reports").add({
+                categoryKey,
+                category: titles[categoryKey],
+                subIssue,
+                description,
+                imageURL,
+                location: { lat: selectedLat, lng: selectedLng },
+                status: "Submitted",
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            alert("✅ Complaint submitted successfully");
+            window.location.href = "track.html";
+        });
+    </script>
+    <script>
+        fetch("./components/chatbot.html")
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("global-chatbot").innerHTML = html;
+            });
+    </script>
+
+
+</body>
+
+</html>

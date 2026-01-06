@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Admin Dashboard | CivicLens</title>
+    <link rel="stylesheet" href="../css/main.css" />
+
+    <style>
+        body {
+            background: #f3f4f6;
+            font-family: system-ui, sans-serif;
+        }
+
+        header {
+            background: #1f2937;
+            color: white;
+            padding: 18px 30px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 16px;
+        }
+
+        .admin-card {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            border-left: 6px solid #2563eb;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .category {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .status {
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .Submitted {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .InProgress {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .Resolved {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .desc {
+            color: #4b5563;
+            margin-bottom: 14px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        select,
+        input {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            width: 100%;
+        }
+
+        .img-preview {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            width: 100%;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>🛠️ CivicLens – Admin Dashboard</header>
+
+    <div class="container">
+        <div id="adminList">Loading reports…</div>
+    </div>
+
+    <!-- 🔥 FIREBASE COMPAT SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAeqE7ED6tR1VbVKET7_UXpAifwTvI0byI",
+            authDomain: "smart-civic-portal-6e6d9.firebaseapp.com",
+            projectId: "smart-civic-portal-6e6d9",
+            storageBucket: "smart-civic-portal-6e6d9.appspot.com"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        const adminList = document.getElementById("adminList");
+
+        db.collection("reports").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+            adminList.innerHTML = "";
+
+            snapshot.forEach(doc => {
+                const d = doc.data();
+                const statusClass =
+                    d.status === "Resolved" ? "Resolved" :
+                        d.status === "In Progress" ? "InProgress" : "Submitted";
+
+                adminList.innerHTML += `
+        <div class="admin-card">
+          <div class="card-header">
+            <div class="category">${d.category}</div>
+            <div class="status ${statusClass}">${d.status}</div>
+          </div>
+
+          <p><b>Issue:</b> ${d.subIssue}</p>
+          <p class="desc">${d.description || "No description"}</p>
+
+          <div class="grid">
+            <select id="status-${doc.id}">
+              <option ${d.status === "Submitted" ? "selected" : ""}>Submitted</option>
+              <option ${d.status === "In Progress" ? "selected" : ""}>In Progress</option>
+              <option ${d.status === "Resolved" ? "selected" : ""}>Resolved</option>
+            </select>
+
+            <input id="by-${doc.id}" placeholder="Solved by" />
+            <input id="dept-${doc.id}" placeholder="Department" />
+            <input type="file" id="img-${doc.id}" accept="image/*"
+              onchange="previewImage(event,'prev-${doc.id}')">
+          </div>
+
+          <img id="prev-${doc.id}" class="img-preview">
+
+          <button onclick="updateStatus('${doc.id}')">
+            Update Status
+          </button>
+        </div>
+      `;
+            });
+        });
+
+        function previewImage(e, id) {
+            const img = document.getElementById(id);
+            img.src = URL.createObjectURL(e.target.files[0]);
+            img.style.display = "block";
+        }
+
+        async function updateStatus(id) {
+            const status = document.getElementById(`status-${id}`).value;
+            const solvedBy = document.getElementById(`by-${id}`).value;
+            const dept = document.getElementById(`dept-${id}`).value;
+            const file = document.getElementById(`img-${id}`).files[0];
+
+            let imageURL = "";
+
+            if (file) {
+                const ref = storage.ref(`resolved/${Date.now()}_${file.name}`);
+                await ref.put(file);
+                imageURL = await ref.getDownloadURL();
+            }
+
+            await db.collection("reports").doc(id).update({
+                status,
+                solvedBy,
+                department: dept,
+                afterImage: imageURL,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            alert("✅ Updated successfully");
+        }
+    </script>
+    <script>
+        fetch("./components/chatbot.html")
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("global-chatbot").innerHTML = html;
+            });
+    </script>
+
+
+
+</body>
+
+</html>

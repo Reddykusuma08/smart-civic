@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Report Issue | CivicLens</title>
+
+  <!-- MAIN CSS (SAME AS INDEX) -->
+  <link rel="stylesheet" href="../css/main.css">
+  />
+
+  <!-- PAGE-SPECIFIC LAYOUT ONLY -->
+  <style>
+    body {
+      background: #f4f6f8;
+    }
+
+    .report-container {
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 32px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ✅ SAME HEADER AS INDEX -->
+  <header class="header">
+
+    <div class="logo-area">
+      <img src="../assets/images/logo.png" alt="CivicLens Logo" class="logo">
+    </div>
+
+    <div class="app-title">
+      <h1>CivicLens</h1>
+      <span>Empowering citizens. Enabling smart governance.</span>
+    </div>
+
+    <nav class="nav-links">
+      <a href="index.html" class="nav-item">Home</a>
+      <a href="report.html" class="nav-item active">Report</a>
+      <a href="track.html" class="nav-item">Track</a>
+      <a href="dashboard.html" class="nav-item">Visualizations</a>
+      <a href="admin-login.html" class="nav-item">Admin</a>
+    </nav>
+
+  </header>
+
+  <!-- REPORT CONTENT -->
+  <section class="report-container">
+    <h1 id="pageTitle">Report a Civic Issue</h1>
+    <p id="selectCategory" class="home-description">
+      Select the category that best describes the issue
+    </p>
+
+    <div class="category-grid">
+
+      <div class="category-card" onclick="openCategory('road')">
+        <img src="../assets/images/road.jpeg" alt="Road">
+        <h3 data-cat="road"></h3>
+      </div>
+
+      <div class="category-card" onclick="openCategory('water')">
+        <img src="../assets/images/water.jpeg" alt="Water">
+        <h3 data-cat="water"></h3>
+      </div>
+
+      <div class="category-card" onclick="openCategory('electricity')">
+        <img src="../assets/images/electricity.jpeg" alt="Electricity">
+        <h3 data-cat="electricity"></h3>
+      </div>
+
+      <div class="category-card" onclick="openCategory('garbage')">
+        <img src="../assets/images/garbage.jpeg" alt="Garbage">
+        <h3 data-cat="garbage"></h3>
+      </div>
+
+      <div class="category-card" onclick="openCategory('drainage')">
+        <img src="../assets/images/drainage.jpeg" alt="Drainage">
+        <h3 data-cat="drainage"></h3>
+      </div>
+
+      <div class="category-card" onclick="openCategory('safety')">
+        <img src="../assets/images/safety.jpeg" alt="Safety">
+        <h3 data-cat="safety"></h3>
+      </div>
+
+      <div class="category-card" onclick="openCategory('public')">
+        <img src="../assets/images/public.jpeg" alt="Public">
+        <h3 data-cat="public"></h3>
+      </div>
+
+      <div class="category-card" onclick="openCategory('pollution')">
+        <img src="../assets/images/pollution.jpeg" alt="Pollution">
+        <h3 data-cat="pollution"></h3>
+      </div>
+
+      <div class="category-card" onclick="openCategory('animal')">
+        <img src="../assets/images/animal.jpeg" alt="Animal">
+        <h3 data-cat="animal"></h3>
+      </div>
+
+      <div class="category-card" onclick="openCategory('emergency')">
+        <img src="../assets/images/emergency.jpeg" alt="Emergency">
+        <h3 data-cat="emergency"></h3>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- LANGUAGE HANDLING -->
+  <script src="../js/i18n.js"></script>
+  <script>
+    const lang = localStorage.getItem("lang") || "en";
+    const t = i18n[lang];
+
+    document.getElementById("pageTitle").innerText = t.reportTitle;
+    document.getElementById("selectCategory").innerText = t.selectCategory;
+
+    document.querySelectorAll("[data-cat]").forEach(el => {
+      el.innerText = t.categories[el.dataset.cat];
+    });
+
+    function openCategory(category) {
+      window.location.href = `report-details.html?category=${category}`;
+    }
+  </script>
+  
+
+  <script>
+    fetch("../components/chatbot.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("global-chatbot").innerHTML = html;
+      });
+  </script>
+
+</body>
+
+</html>

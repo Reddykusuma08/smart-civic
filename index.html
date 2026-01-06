@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>CivicLens | Smart Civic Governance Platform</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    /* ================= RESET ================= */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+      line-height: 1.6;
+    }
+
+    /* ================= NAVBAR ================= */
+    .navbar {
+      background: #0f172a;
+      color: white;
+      padding: 16px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar h1 {
+      font-size: 1.4rem;
+      letter-spacing: 1px;
+    }
+
+    .navbar nav a {
+      color: #e5e7eb;
+      text-decoration: none;
+      margin-left: 22px;
+      font-weight: 500;
+    }
+
+    .navbar nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* ================= HERO ================= */
+    .hero {
+      background: linear-gradient(135deg,
+          #0f172a,
+          #1e3a8a);
+      color: white;
+      padding: 80px 30px;
+      text-align: center;
+    }
+
+    .hero h2 {
+      font-size: 2.4rem;
+      margin-bottom: 18px;
+    }
+
+    .hero p {
+      max-width: 760px;
+      margin: auto;
+      font-size: 1.1rem;
+      opacity: 0.95;
+    }
+
+    .hero-actions {
+      margin-top: 35px;
+    }
+
+    .btn {
+      display: inline-block;
+      margin: 10px;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #1e3a8a;
+    }
+
+    .btn-secondary:hover {
+      background: #e5e7eb;
+    }
+
+    /* ================= FEATURES ================= */
+    .features {
+      max-width: 1100px;
+      margin: 70px auto;
+      padding: 0 25px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 30px;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 28px;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+
+    .feature-card h3 {
+      margin-bottom: 12px;
+      color: #1e3a8a;
+    }
+
+    .feature-card p {
+      font-size: 0.95rem;
+      color: #475569;
+    }
+
+    /* ================= TRUST SECTION ================= */
+    .trust {
+      background: #f1f5f9;
+      padding: 60px 30px;
+      text-align: center;
+    }
+
+    .trust h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .trust p {
+      max-width: 760px;
+      margin: auto;
+      color: #475569;
+    }
+
+    /* ================= FOOTER ================= */
+    footer {
+      background: #0f172a;
+      color: #94a3b8;
+      padding: 20px;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================= NAVBAR ================= -->
+  <header class="navbar">
+    <h1>CivicLens</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="report.html">Report</a>
+      <a href="track.html">Track</a>
+      <a href="dashboard.html">Visualizations</a>
+      <a href="admin-login.html">Admin</a>
+    </nav>
+  </header>
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <h2>Smart Civic Governance Platform</h2>
+    <p>
+      CivicLens enables citizens to report civic issues using images,
+      voice input, and precise location data while empowering authorities
+      to resolve problems transparently and efficiently.
+    </p>
+
+    <div class="hero-actions">
+      <a href="report.html" class="btn btn-primary">🚨 Report an Issue</a>
+      <a href="track.html" class="btn btn-secondary">📍 Track Status</a>
+    </div>
+  </section>
+
+  <!-- ================= FEATURES ================= -->
+  <section class="features">
+    <div class="feature-card">
+      <h3>Citizen-Friendly</h3>
+      <p>Simple reporting using text, images, voice input, and map location.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3>Real-Time Tracking</h3>
+      <p>Citizens can track complaint status from submission to resolution.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3>Admin Workflow</h3>
+      <p>Authorized officials manage, prioritize, and resolve issues securely.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3>Data Transparency</h3>
+      <p>Public dashboards and visualizations improve accountability.</p>
+    </div>
+  </section>
+
+  <!-- ================= TRUST ================= -->
+  <section class="trust">
+    <h2>Built for Smart Cities</h2>
+    <p>
+      CivicLens follows e-governance principles, ensuring accessibility,
+      transparency, and accountability in public service delivery.
+    </p>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    © 2026 CivicLens • Smart City & E-Governance Initiative
+  </footer>
+  <!-- 🤖 GLOBAL CHATBOT -->
+  <div id="global-chatbot"></div>
+
+
+  </script>
+  <script>
+    fetch("./components/chatbot.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("global-chatbot").innerHTML = html;
+      });
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Track Civic Issues | CivicLens</title>
+
+  <!-- MAIN CSS (SAME AS INDEX) -->
+  <link rel="stylesheet" href="../css/main.css" />
+
+  <style>
+    body {
+      background: #f4f6f8;
+    }
+
+    .track-container {
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .track-container h1 {
+      font-size: 28px;
+      margin-bottom: 24px;
+      color: #1f2937;
+    }
+
+    /* FILTERS */
+    .filters {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .filters select {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    /* GRID */
+    .track-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    /* CARD */
+    .track-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 18px;
+      text-align: left;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+      transition: transform 0.2s;
+    }
+
+    .track-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .track-card h3 {
+      margin: 0 0 6px;
+      color: #2563eb;
+      font-size: 18px;
+    }
+
+    .track-card p {
+      margin: 6px 0;
+      font-size: 14px;
+      color: #374151;
+    }
+
+    .status {
+      margin-top: 10px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      display: inline-block;
+      font-size: 12px;
+    }
+
+    .pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .progress {
+      background: #e0e7ff;
+      color: #3730a3;
+    }
+
+    .resolved {
+      background: #dcfce7;
+      color: #065f46;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ✅ SAME HEADER AS INDEX -->
+  <header class="header">
+
+    <!-- LEFT : LOGO -->
+    <div class="logo-area">
+      <img src="../assets/images/logo.png" alt="CivicLens Logo" class="logo">
+    </div>
+
+    <!-- CENTER : TITLE -->
+    <div class="app-title">
+      <h1>CivicLens</h1>
+      <span>Empowering citizens. Enabling smart governance.</span>
+    </div>
+
+    <!-- RIGHT : NAVIGATION -->
+    <nav class="nav-links">
+      <a href="index.html" class="nav-item">Home</a>
+      <a href="report.html" class="nav-item">Report</a>
+      <a href="track.html" class="nav-item active">Track</a>
+      <a href="dashboard.html" class="nav-item">Visualizations</a>
+      <a href="admin-login.html" class="nav-item">Admin</a>
+    </nav>
+
+  </header>
+
+  <!-- ✅ TRACK CONTENT -->
+  <section class="track-container">
+
+    <h1>Track Civic Issues</h1>
+
+    <!-- FILTERS -->
+    <div class="filters">
+
+      <select id="filterCategory">
+        <option value="">All Categories</option>
+        <option value="Road & Transport">Road & Transport</option>
+        <option value="Water Supply">Water Supply</option>
+        <option value="Electricity">Electricity</option>
+        <option value="Garbage & Sanitation">Garbage & Sanitation</option>
+        <option value="Drainage & Sewage">Drainage & Sewage</option>
+        <option value="Street Safety">Street Safety</option>
+        <option value="Public Facilities">Public Facilities</option>
+        <option value="Pollution & Noise">Pollution & Noise</option>
+        <option value="Animal Issues">Animal Issues</option>
+        <option value="Emergency / Disaster">Emergency / Disaster</option>
+      </select>
+
+      <select id="filterStatus">
+        <option value="">All Status</option>
+        <option value="Submitted">Submitted</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Resolved">Resolved</option>
+      </select>
+
+      <select id="filterDate">
+        <option value="latest">Latest First</option>
+        <option value="oldest">Oldest First</option>
+      </select>
+
+    </div>
+
+    <!-- DATA GRID -->
+    <div class="track-grid" id="trackGrid">
+      <!-- Issues from Firestore will render here -->
+    </div>
+
+  </section>
+
+  <!-- ✅ FIREBASE + TRACK LOGIC -->
+  <script type="module" src="../js/track.js"></script>
+  <!-- 🤖 GLOBAL CHATBOT -->
+  <div id="global-chatbot"></div>
+
+  <script>
+    fetch("../components/chatbot.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("global-chatbot").innerHTML = html;
+      });
+  </script>
+
+
+</body>
+
+</html>

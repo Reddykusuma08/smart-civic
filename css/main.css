@@ -1,0 +1,310 @@
+/* ================== CIVICLENS HOME HEADER ================== */
+
+.header {
+  background-color: #ffffff;
+  padding: 16px 32px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* LEFT : LOGO */
+.logo-area {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+}
+
+/* CENTER : TITLE + MOTTO + LANGUAGE */
+.app-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.app-title h1 {
+  font-size: 28px;
+  margin: 0;
+  font-weight: 700;
+  color: #2563eb;
+  letter-spacing: 0.3px;
+}
+
+.app-title span {
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 4px;
+  color: #6b7280;
+}
+
+/* ================== CENTER LANGUAGE BUTTONS ================== */
+
+.lang-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.lang-buttons button {
+  padding: 5px 14px;
+  border-radius: 18px;
+  border: 1px solid #2563eb;
+  background: #ffffff;
+  color: #2563eb;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lang-buttons button:hover {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+/* RIGHT : NAVIGATION */
+.nav-links {
+  display: flex;
+  gap: 18px;
+}
+
+.nav-item {
+  text-decoration: none;
+  font-weight: 600;
+  color: #374151;
+}
+
+.nav-item:hover,
+.nav-item.active {
+  color: #2563eb;
+}
+
+/* ================== HOME CONTENT ================== */
+
+.home-container {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.home-description {
+  max-width: 720px;
+  margin: 20px auto 40px;
+  font-size: 18px;
+  line-height: 1.7;
+  color: #374151;
+}
+
+/* ================== HOME BUTTONS ================== */
+
+.home-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.home-btn {
+  padding: 14px 26px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.home-btn.primary {
+  background-color: #2563eb;
+  color: white;
+}
+
+.home-btn.secondary {
+  background-color: #e0e7ff;
+  color: #2563eb;
+}
+
+/* ================== LANGUAGE INFO ================== */
+
+.lang-hint {
+  font-size: 14px;
+  margin-top: 10px;
+  color: #374151;
+}
+
+.lang-selected {
+  font-size: 13px;
+  margin-top: 6px;
+  color: #059669;
+  font-weight: 600;
+}
+
+/* ================== REPORT PAGE ================== */
+
+.report-container {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 24px;
+  text-align: center;
+}
+
+.report-container h2 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 40px;
+}
+
+/* ================== CATEGORY GRID ================== */
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 32px;
+}
+
+/* ================== CATEGORY CARD ================== */
+
+.category-card {
+  background-color: #ffffff;
+  border-radius: 18px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.category-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 38px rgba(37, 99, 235, 0.18);
+}
+
+/* ================== CARD IMAGE ================== */
+
+.category-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* ================== CARD TITLE ================== */
+
+.category-card h3 {
+  padding: 16px;
+  font-size: 17px;
+  font-weight: 600;
+  color: #374151;
+  background-color: #f9fafb;
+}
+
+/* ================== ACCESSIBILITY ================== */
+
+.category-card:focus,
+.category-card:active {
+  outline: 3px solid #2563eb;
+}
+
+/* ================== MOBILE RESPONSIVE ================== */
+
+@media (max-width: 768px) {
+  .header {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    text-align: center;
+  }
+
+  .nav-links {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .report-container {
+    margin-top: 40px;
+  }
+
+  .report-container h2 {
+    font-size: 22px;
+  }
+
+  .category-grid {
+    gap: 22px;
+  }
+
+  .category-card img {
+    height: 140px;
+  }
+
+  .category-card h3 {
+    font-size: 16px;
+  }
+}
+
+.issues-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 22px;
+}
+
+.track-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s;
+}
+
+.track-card:hover {
+  transform: translateY(-6px);
+}
+
+.track-card h3 {
+  color: #2563eb;
+  margin-bottom: 8px;
+}
+
+.desc {
+  margin: 8px 0;
+  color: #374151;
+}
+
+.desc.muted {
+  color: #9ca3af;
+}
+
+.meta {
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+.status {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-pending {
+  background: #fde68a;
+  color: #92400e;
+}
+
+.status-progress {
+  background: #bfdbfe;
+  color: #1e40af;
+}
+
+.status-resolved {
+  background: #bbf7d0;
+  color: #065f46;
+}

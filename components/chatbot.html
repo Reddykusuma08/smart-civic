@@ -1,0 +1,126 @@
+<!-- 🤖 CHATBOT FLOAT BUTTON -->
+<div id="chatbotToggle" style="
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #2563eb;
+  color: white;
+  padding: 12px 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  z-index: 999999;">
+    🤖
+</div>
+
+<!-- 💬 CHATBOT BOX -->
+<div id="chatbotBox" style="
+  display: none;
+  position: fixed;
+  bottom: 75px;
+  right: 20px;
+  width: 340px;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+  z-index: 999999;
+  overflow: hidden;">
+
+    <div style="background:#2563eb;color:white;padding:10px;text-align:center;font-weight:600;">
+        🧠 Civic Help Assistant
+    </div>
+
+    <div id="chat" style="height:280px;overflow-y:auto;padding:10px;font-size:14px;"></div>
+    <div id="options" style="padding:10px;border-top:1px solid #e5e7eb;"></div>
+</div>
+
+<script>
+    /* ========== TOGGLE ========== */
+    const toggle = document.getElementById("chatbotToggle");
+    const box = document.getElementById("chatbotBox");
+    toggle.onclick = () => {
+        box.style.display = box.style.display === "none" ? "block" : "none";
+    };
+
+    /* ========== STATE ========== */
+    const chat = document.getElementById("chat");
+    const options = document.getElementById("options");
+    let language = "en";
+
+    /* ========== HELPERS ========== */
+    function bot(msg) {
+        chat.innerHTML += `<div style="background:#f1f5f9;padding:8px;margin:6px 0;border-radius:8px;">${msg}</div>`;
+        chat.scrollTop = chat.scrollHeight;
+    }
+    function user(msg) {
+        chat.innerHTML += `<div style="background:#2563eb;color:white;padding:8px;margin:6px 0;border-radius:8px;text-align:right;">${msg}</div>`;
+        chat.scrollTop = chat.scrollHeight;
+    }
+    function clearOptions() {
+        options.innerHTML = "";
+    }
+    function addOption(text, action) {
+        const btn = document.createElement("button");
+        btn.innerText = text;
+        btn.style.margin = "4px";
+        btn.style.padding = "6px 10px";
+        btn.style.border = "none";
+        btn.style.borderRadius = "6px";
+        btn.style.background = "#10b981";
+        btn.style.color = "white";
+        btn.style.cursor = "pointer";
+        btn.onclick = action;
+        options.appendChild(btn);
+    }
+
+    /* ========== NAVIGATION ========== */
+    function showNavigation() {
+        addOption("🏠 Home", () => location.href = "index.html");
+        addOption("📝 Report Issue", () => location.href = "report.html");
+        addOption("📊 Track Issues", () => location.href = "track.html");
+    }
+
+    /* ========== START ========== */
+    bot("👋 Welcome to Civic Help Assistant");
+    bot("Please select your language:");
+
+    addOption("English", () => setLanguage("en"));
+    addOption("తెలుగు", () => setLanguage("te"));
+    addOption("हिंदी", () => setLanguage("hi"));
+
+    function setLanguage(lang) {
+        language = lang;
+        clearOptions();
+        user(lang === "en" ? "English" : lang === "te" ? "తెలుగు" : "हिंदी");
+
+        bot(
+            lang === "en" ? "Do you want to report a civic issue?" :
+                lang === "te" ? "మీరు సమస్యను నివేదించాలనుకుంటున్నారా?" :
+                    "क्या आप समस्या दर्ज करना चाहते हैं?"
+        );
+
+        addOption("Yes", showCategories);
+        addOption("No", showNavigation);
+    }
+
+    /* ========== CATEGORIES ========== */
+    function showCategories() {
+        clearOptions();
+        bot("Select issue category:");
+
+        addOption("🛣️ Road", () => openReport("road"));
+        addOption("🚰 Water", () => openReport("water"));
+        addOption("💡 Electricity", () => openReport("electricity"));
+        addOption("🗑️ Garbage", () => openReport("garbage"));
+    }
+
+    /* ========== OPEN REPORT ========== */
+    function openReport(category) {
+        clearOptions();
+        bot("📸 Image optional • 🗺️ Location required");
+        addOption("Open Report Form", () => {
+            location.href = `report.html?category=${category}`;
+        });
+        showNavigation();
+    }
+</script>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Civic Issues Heatmap</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <style>
+        #map {
+            height: 90vh;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <h1 style="text-align:center">Civic Issues Heatmap</h1>
+    </header>
+
+    <div id="map"></div>
+
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeqE7ED6tR1VbVKET7_UXpAifwTvI0byI&libraries=visualization"></script>
+    <script type="module" src="../js/heatmap.js"></script>
+   <script>
+  fetch("./components/chatbot.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("global-chatbot").innerHTML = html;
+    });
+</script>
+
+
+</body>
+
+</html>

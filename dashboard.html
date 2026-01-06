@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Public Dashboard | CivicLens</title>
+    <link rel="stylesheet" href="../css/main.css" />
+
+    <style>
+        .dashboard {
+            max-width: 1000px;
+            margin: 40px auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 14px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h2 {
+            font-size: 36px;
+            margin: 10px 0;
+        }
+
+        .total {
+            color: #2563eb;
+        }
+
+        .resolved {
+            color: #16a34a;
+        }
+
+        .pending {
+            color: #d97706;
+        }
+
+        .high {
+            color: #dc2626;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <h1 style="text-align:center">CivicLens – Public Dashboard</h1>
+    </header>
+
+    <section class="dashboard">
+        <div class="card total">
+            <p>Total Complaints</p>
+            <h2 id="totalCount">0</h2>
+        </div>
+
+        <div class="card resolved">
+            <p>Resolved Complaints</p>
+            <h2 id="resolvedCount">0</h2>
+        </div>
+
+        <div class="card pending">
+            <p>Pending Complaints</p>
+            <h2 id="pendingCount">0</h2>
+        </div>
+
+        <div class="card high">
+            <p>High Priority Issues</p>
+            <h2 id="highCount">0</h2>
+        </div>
+    </section>
+
+    <section>
+        <h2 style="text-align:center">Complaints by Category</h2>
+        <div id="categoryChart" style="max-width:700px;height:400px;margin:auto;"></div>
+    </section>
+
+    <!-- GOOGLE CHARTS -->
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <!-- DASHBOARD LOGIC -->
+    <script type="module" src="../js/dashboard.js"></script>
+    <script>
+        fetch("./components/chatbot.html")
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("global-chatbot").innerHTML = html;
+            });
+    </script>
+
+
+
+</body>
+
+</html>
